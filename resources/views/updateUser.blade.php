@@ -1,6 +1,19 @@
 @include("header")
 
+
+@if ($isAdmin)
+    
+<a class="btn btn-primary btn-block mt-4" href="{{URL('/create')}}">Add New User</a>
+@endif
 <h2>Update User</h2>
+
+@if(isset($errors))
+@foreach($errors->all() as $error)
+<div  align="center"  class="alert alert-danger center" id="error-notification">
+   <p>{{ $error }}</p>
+</div>
+@endforeach
+@endif
 
 <form class="form" method="POST" action="{{URL('/update')}}">
     {{ csrf_field() }}
@@ -11,14 +24,14 @@
     <!-- Name input -->
   <div class="form-outline mb-4">
     <label class="form-label" for="form2Example1">Full Name</label>
-    <input type="text" id="form2Example1" class="form-control" name="name" required />
+    <input type="text" id="form2Example1" class="form-control" name="name" value="{{ $user->name}}" required />
    
   </div>
 
   <!-- Email input -->
   <div class="form-outline mb-4">
     <label class="form-label" for="form2Example1">Email address</label>
-    <input type="email" id="form2Example1" class="form-control" name="email" required />
+    <input type="email" id="form2Example1" class="form-control" name="email" value="{{ $user->email}}" required />
   
   </div>
 
@@ -35,9 +48,4 @@
   <!-- Submit button -->
   <button type="submit" class="btn btn-primary btn-block mt-4">Update User</button>
 
-  <!-- Register buttons -->
-  <div class="text-center">
-    <p>Not a member? <a href="{{URL('/')}}">Register</a></p>
-   
-  </div>
 </form>

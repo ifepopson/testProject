@@ -47,7 +47,34 @@ class UserController extends Controller
 
     public function update($id){
         
-        return view('updateUser')->with(compact('id'));
+        $user = User::find($id);
+
+        $isAdmin = false;
+        $users = null;
+
+        // dd(Auth::user()->role);
+       if(Auth::user()->role == "admin"){
+            $isAdmin = true;
+            $users = User::all();
+       }
+
+       
+        return view('updateUser')->with(compact('id','user'));
+    }
+
+    public function updateUser(Request $req){
+        
+        $user = User::find($req->id);
+
+        $user->name = $req->name;
+        $user->email = $req->email;
+        $user->role = $req->role;
+
+        $user->save();
+
+        $id = $req->id;
+
+        return view('updateUser')->with(compact('id','user'))->withErrors(["Updated Successfully."]);
     }
 
     public function delete($id){
