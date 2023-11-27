@@ -58,8 +58,8 @@ class UserController extends Controller
             $users = User::all();
        }
 
-       
-        return view('updateUser')->with(compact('id','user'));
+
+        return view('updateUser')->with(compact('id','user','isAdmin'));
     }
 
     public function updateUser(Request $req){
@@ -74,7 +74,13 @@ class UserController extends Controller
 
         $id = $req->id;
 
-        return view('updateUser')->with(compact('id','user'))->withErrors(["Updated Successfully."]);
+        $isAdmin = false;
+        if(Auth::user()->role == "admin"){
+            $isAdmin = true;
+            $users = User::all();
+       }
+
+        return view('updateUser')->with(compact('id','user','isAdmin'))->withErrors(["Updated Successfully."]);
     }
 
     public function delete($id){
